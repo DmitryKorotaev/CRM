@@ -5,7 +5,7 @@
         <a href="#" @click.prevent="$emit('toggle')">
           <i class="material-icons black-text">dehaze</i>
         </a>
-        <span class="black-text"> {{ date }}</span>
+        <span class="black-text"> {{ dateFilter(date) }}</span>
       </div>
 
       <ul class="right hide-on-small-and-down">
@@ -41,16 +41,32 @@
 
 <script>
 export default {
-  
   data: () => ({
     date: new Date(),
     interval: null,
-    dropdown: null
+    dropdown: null,
   }),
   methods: {
     logout() {
       console.log("logout");
       this.$router.push("/login?message=logout");
+    },
+    dateFilter(value, format = "datetime") {
+      const options = {};
+
+      if (format.includes('date')) {
+        options.day = '2-digit'
+        options.month = 'long'
+        options.year = 'numeric'
+      }
+
+      if (format.includes('time')) {
+        options.hour = '2-digit'
+        options.minute = '2-digit'
+        options.second = '2-digit'
+      }
+
+      return new Intl.DateTimeFormat("ru-RU", options).format(new Date(value));
     },
   },
   mounted() {
@@ -64,9 +80,9 @@ export default {
   },
   beforeUnmount() {
     console.log("beforeUnmount");
-    clearInterval(this.interval)
+    clearInterval(this.interval);
     if (this.dropdown && this.dropdown.destroy) {
-      this.dropdown.destroy()
+      this.dropdown.destroy();
     }
   },
 };
