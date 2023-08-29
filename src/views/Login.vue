@@ -88,7 +88,7 @@ export default {
       minLength: helpers.withMessage(
         ({ $params, $model }) =>
           `Пароль должен быть ${$params.min} символов. Сейчас он  ${$model.length}`,
-        minLength(6)
+        minLength(8)
       ),
     },
   },
