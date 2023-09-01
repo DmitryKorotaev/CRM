@@ -38,10 +38,29 @@
               :key="error.$uid"
               >{{ error.$message }}</small>
             </div>
+
+
             <div class="input-field">
-              <input id="name" type="text" class="validate" />
+              <input 
+              id="name" 
+              type="text" 
+              class="validate"
+              v-model.trim="name"
+              :class= "{
+                invalid:
+                (v$.name.$dirty && !v$.name.required) ||
+                (v$.name.$dirty && !v$.name.minLength),
+              }"
+              
+               />
               <label for="name">Имя</label>
-              <small class="helper-text invalid">Name</small>
+
+              <small 
+              class="helper-text invalid"
+              v-for="error of v$.name.$errors"
+              :key="error.$uid"
+
+              >{{ error.$message }}</small>
             </div>
             <p>
               <label>
@@ -63,7 +82,7 @@
 
             <p class="center">
               Уже есть аккаунт?
-              <a href="/">Войти!</a>
+              <router-link to="/login">Войти!</router-link>
             </p>
           </div>
         </form>
@@ -74,7 +93,7 @@ import { useVuelidate } from "@vuelidate/core";
 import { email, required, minLength, helpers } from "@vuelidate/validators";
 
 export default {
-  name: "login",
+  name: "Register",
   setup() {
     return { v$: useVuelidate() };
   },
@@ -82,6 +101,8 @@ export default {
     return {
       email: "",
       password: "",
+      name: "",
+      agree: false,
     };
   },
   validations: {
@@ -100,6 +121,17 @@ export default {
         minLength(8)
       ),
     },
+    name: {
+      required: helpers.withMessage("Введите имя", required),
+      minLength: helpers.withMessage(
+        ({ $params, $model }) =>
+        `Имя должно состаять не менее чем из ${$params.min} символов.`,
+        minLength(2)
+      ),
+    },
+    agree: {
+      checked: v => v
+    }
   },
   methods: {
     submitHandler() {
