@@ -1,91 +1,89 @@
 <template>
-        <form class="card auth-card" @submit.prevent="submitHandler">
-          <div class="card-content">
-            <span class="card-title">Домашняя бухгалтерия</span>
-            <div class="input-field">
-              <input 
-              id="email" 
-              type="text"
-              v-model.trim="email"
-              :class="{
-                invalid:
-                  (v$.email.$dirty && !v$.email.required) ||
-                  (v$.email.$dirty && !v$.email.email),
-              }" />
-              <label for="email">Email</label>
-              <small 
-              class="helper-text invalid"
-              v-for="error of v$.email.$errors"
-              :key="error.$uid"
+  <form class="card auth-card" @submit.prevent="submitHandler">
+    <div class="card-content">
+      <span class="card-title">Домашняя бухгалтерия</span>
+      <div class="input-field">
+        <input
+          id="email"
+          type="text"
+          v-model.trim="email"
+          :class="{
+            invalid:
+              (v$.email.$dirty && !v$.email.required) ||
+              (v$.email.$dirty && !v$.email.email),
+          }"
+        />
+        <label for="email">Email</label>
+        <small
+          class="helper-text invalid"
+          v-for="error of v$.email.$errors"
+          :key="error.$uid"
+          >{{ error.$message }}</small
+        >
+      </div>
+      <div class="input-field">
+        <input
+          id="password"
+          type="password"
+          class="validate"
+          v-model.trim="password"
+          :class="{
+            invalid:
+              (v$.password.$dirty && !v$.password.required) ||
+              (v$.password.$dirty && !v$.password.minLength),
+          }"
+        />
+        <label for="password">Пароль</label>
+        <small
+          class="helper-text invalid"
+          v-for="error of v$.password.$errors"
+          :key="error.$uid"
+          >{{ error.$message }}</small
+        >
+      </div>
 
-              >{{ error.$message }}</small>
-            </div>
-            <div class="input-field">
-              <input 
-              id="password" 
-              type="password" 
-              class="validate"
-              v-model.trim="password"
-              :class="{
-                invalid:
-                  (v$.password.$dirty && !v$.password.required) ||
-                  (v$.password.$dirty && !v$.password.minLength),
-              }" />
-              <label for="password">Пароль</label>
-              <small 
-              class="helper-text invalid"
-              v-for="error of v$.password.$errors"
-              :key="error.$uid"
-              >{{ error.$message }}</small>
-            </div>
+      <div class="input-field">
+        <input
+          id="name"
+          type="text"
+          class="validate"
+          v-model.trim="name"
+          :class="{
+            invalid:
+              (v$.name.$dirty && !v$.name.required) ||
+              (v$.name.$dirty && !v$.name.minLength),
+          }"
+        />
+        <label for="name">Имя</label>
 
+        <small
+          class="helper-text invalid"
+          v-for="error of v$.name.$errors"
+          :key="error.$uid"
+          >{{ error.$message }}</small
+        >
+      </div>
+      <p>
+        <label>
+          <input type="checkbox" />
+          <span>С правилами согласен</span>
+        </label>
+      </p>
+    </div>
+    <div class="card-action">
+      <div>
+        <button class="btn waves-effect waves-light auth-submit" type="submit">
+          Зарегистрироваться
+          <i class="material-icons right">send</i>
+        </button>
+      </div>
 
-            <div class="input-field">
-              <input 
-              id="name" 
-              type="text" 
-              class="validate"
-              v-model.trim="name"
-              :class= "{
-                invalid:
-                (v$.name.$dirty && !v$.name.required) ||
-                (v$.name.$dirty && !v$.name.minLength),
-              }"
-              
-               />
-              <label for="name">Имя</label>
-
-              <small 
-              class="helper-text invalid"
-              v-for="error of v$.name.$errors"
-              :key="error.$uid"
-
-              >{{ error.$message }}</small>
-            </div>
-            <p>
-              <label>
-                <input type="checkbox" />
-                <span>С правилами согласен</span>
-              </label>
-            </p>
-          </div>
-          <div class="card-action">
-            <div>
-              <button
-                class="btn waves-effect waves-light auth-submit"
-                type="submit"
-              >
-                Зарегистрироваться
-                <i class="material-icons right">send</i>
-              </button>
-            </div>
-
-            <p class="center">
-              Уже есть аккаунт?
-              <router-link to="/login">Войти!</router-link>
-            </p>
-          </div>
-        </form>
+      <p class="center">
+        Уже есть аккаунт?
+        <router-link to="/login">Войти!</router-link>
+      </p>
+    </div>
+  </form>
 </template>
 
 <script>
@@ -97,6 +95,7 @@ export default {
   setup() {
     return { v$: useVuelidate() };
   },
+
   data() {
     return {
       email: "",
@@ -105,6 +104,7 @@ export default {
       agree: false,
     };
   },
+
   validations: {
     email: {
       email: helpers.withMessage("Введите корректный Email", email),
@@ -125,14 +125,19 @@ export default {
       required: helpers.withMessage("Введите имя", required),
       minLength: helpers.withMessage(
         ({ $params, $model }) =>
-        `Имя должно состаять не менее чем из ${$params.min} символов.`,
+          `Имя должно состаять не менее чем из ${$params.min} символов.`,
         minLength(2)
       ),
     },
     agree: {
-      checked: v => v
-    }
+      checked: (v) => v,
+    },
   },
+
+  mounted() {
+    this.$message('test')
+  },
+
   methods: {
     submitHandler() {
       console.log(this.v$);
@@ -140,6 +145,7 @@ export default {
         this.v$.$touch();
         return;
       }
+
       const formData = {
         email: this.email,
         password: this.password,

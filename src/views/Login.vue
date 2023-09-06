@@ -92,6 +92,9 @@ export default {
       ),
     },
   },
+  mounted() {
+    this.$message("test");
+  },
   methods: {
     submitHandler() {
       console.log(this.v$);
