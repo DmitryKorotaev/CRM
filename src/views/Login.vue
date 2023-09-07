@@ -61,6 +61,7 @@
 </template>
 
 <script>
+import Messages from "@/utils/Messages";
 import { useVuelidate } from "@vuelidate/core";
 import { email, required, minLength, helpers } from "@vuelidate/validators";
 
@@ -93,7 +94,9 @@ export default {
     },
   },
   mounted() {
-    this.$message("test");
+    if (Messages[this.$route.query.message]) {
+      this.$message(Messages[this.$route.query.message])
+    }
   },
   methods: {
     submitHandler() {

@@ -134,9 +134,9 @@ export default {
     },
   },
 
-  mounted() {
+  /*mounted() {
     this.$message('test')
-  },
+  }, */
 
   methods: {
     submitHandler() {
