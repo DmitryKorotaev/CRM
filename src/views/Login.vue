@@ -95,11 +95,11 @@ export default {
   },
   mounted() {
     if (Messages[this.$route.query.message]) {
-      this.$message(Messages[this.$route.query.message])
+      this.$message(Messages[this.$route.query.message]);
     }
   },
   methods: {
-    submitHandler() {
+    async submitHandler() {
       console.log(this.v$);
       if (this.v$.$invalid) {
         this.v$.$touch();
@@ -111,7 +111,10 @@ export default {
       };
 
       console.log(formData);
-      this.$router.push("/");
+      try {
+        await this.$store.dispatch("login", formData);
+        this.$router.push("/");
+      } catch (error) {}
     },
   },
 };
