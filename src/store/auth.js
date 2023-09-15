@@ -8,22 +8,27 @@ export default {
         throw error;
       }
     },
-    async register({}, { email, password, name }) {
+    async register({ dispatch }, { email, password, name }) {
       try {
         await firebase.auth().createUserWithEmailAndPassword(email, password);
+        const uid = await dispatch("getUid");
+        await firebase.database().ref(`/users/${uid}/info`).set({
+          bill: 10000,
+          name,
+        });
       } catch (error) {
-        console.log(error)
+        console.log(error);
         throw error;
       }
     },
 
-    async gitUid() {
-       const user = firebase.auth().currentUser
-       return user ? user.uid : null
+    getUid() {
+      const user = firebase.auth().currentUser;
+      return user ? user.uid : null;
     },
 
     async logout() {
-      await firebase.auth().signOut()
+      await firebase.auth().signOut();
     },
   },
 };

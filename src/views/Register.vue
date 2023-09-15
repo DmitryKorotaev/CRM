@@ -139,7 +139,7 @@ export default {
   }, */
 
   methods: {
-    submitHandler() {
+    async submitHandler() {
       console.log(this.v$);
       if (this.v$.$invalid) {
         this.v$.$touch();
@@ -149,10 +149,13 @@ export default {
       const formData = {
         email: this.email,
         password: this.password,
+        name: this.name
       };
-
-      console.log(formData);
-      this.$router.push("/");
+      
+      try {
+        await this.$store.dispatch("register", formData);
+        this.$router.push("/");
+      } catch (error) {}
     },
   },
 };
