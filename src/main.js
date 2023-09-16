@@ -1,4 +1,5 @@
 import { createApp } from "vue";
+import { getDatabase, ref, set } from "firebase/database";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
@@ -23,7 +24,7 @@ let app;
 
 firebase.auth().onAuthStateChanged(() => {
   if (!app) {
-    createApp(App).use(store).use(router).use(MessagePlugin).mount("#app");
+    app = createApp(App).use(store).use(router).use(MessagePlugin).mount("#app");
   }
 });
 // Initialize Firebase

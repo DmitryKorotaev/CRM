@@ -110,7 +110,6 @@ export default {
         password: this.password,
       };
 
-      console.log(formData);
       try {
         await this.$store.dispatch("login", formData);
         this.$router.push("/");

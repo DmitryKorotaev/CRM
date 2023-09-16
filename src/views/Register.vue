@@ -90,6 +90,7 @@
 import { useVuelidate } from "@vuelidate/core";
 import { email, required, minLength, helpers } from "@vuelidate/validators";
 
+
 export default {
   name: "Register",
   setup() {
@@ -140,7 +141,6 @@ export default {
 
   methods: {
     async submitHandler() {
-      console.log(this.v$);
       if (this.v$.$invalid) {
         this.v$.$touch();
         return;
@@ -149,11 +149,11 @@ export default {
       const formData = {
         email: this.email,
         password: this.password,
-        name: this.name
+        name: this.name,
       };
-      
+
       try {
-        await this.$store.dispatch("register", formData);
+        await this.$store.dispatch('register', formData);
         this.$router.push("/");
       } catch (error) {}
     },
